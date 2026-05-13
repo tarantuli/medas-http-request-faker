@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "522bae7ea1ba4bacb7d3a3094903455e",
+    "content-hash": "6789d21b4638f6439296b6741363f6df",
     "packages": [
         {
             "name": "morphp/medas-core",
@@ -159,16 +159,16 @@
         },
         {
             "name": "morphp/medas-http-request-handler",
-            "version": "v3.0.10",
+            "version": "v3.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tarantuli/medas-http-request-handler.git",
-                "reference": "56e94bbcd1cea498c0d0a544182e67f53624e9b6"
+                "reference": "906b9fe8fee798ff292b3bda74ffd02f8bff160b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/56e94bbcd1cea498c0d0a544182e67f53624e9b6",
-                "reference": "56e94bbcd1cea498c0d0a544182e67f53624e9b6",
+                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/906b9fe8fee798ff292b3bda74ffd02f8bff160b",
+                "reference": "906b9fe8fee798ff292b3bda74ffd02f8bff160b",
                 "shasum": ""
             },
             "require": {
@@ -208,10 +208,10 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.0.10",
+                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.0.12",
                 "issues": "https://github.com/tarantuli/medas-http-request-handler/issues"
             },
-            "time": "2026-05-13T10:35:30+00:00"
+            "time": "2026-05-13T11:51:29+00:00"
         },
         {
             "name": "morphp/medas-json",

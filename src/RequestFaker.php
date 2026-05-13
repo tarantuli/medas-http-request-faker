@@ -84,6 +84,7 @@ readonly class RequestFaker
     public function processRequest(Request\Request $request): Response
     {
         $this->debugInformationGatherer->events = [];
+        $this->requestFactory->set($request);
 
         return $this->requestHandler->processRequest($request);
     }
