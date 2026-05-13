@@ -14,7 +14,7 @@ class HttpRequestFakerPackage extends BasePackage
     public function dependencies(): array
     {
         return [
-            HttpRequestHandlerPackage::class,
+            HttpRequestHandlerPackage::instance(),
         ];
     }
 
