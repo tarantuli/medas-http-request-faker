@@ -37,7 +37,6 @@ readonly class RequestFaker
         Request\Method $method,
         string         $uri,
         array          $serverData = [],
-        array          $postData = [],
         array          $bodyData = [],
         array          $fileData = [],
     ): Request\Request
@@ -46,7 +45,6 @@ readonly class RequestFaker
             $method,
             $this->uriManager->fromString($uri),
             new Request\ServerData($serverData),
-            new Request\PostData($postData),
             new Request\BodyData($bodyData),
             new Request\FileData($fileData),
         );
@@ -61,13 +59,12 @@ readonly class RequestFaker
         Request\Method $method,
         string         $uri,
         array          $serverData = [],
-        array          $postData = [],
         array          $bodyData = [],
         array          $fileData = [],
     ): void
     {
         $this->debugInformationGatherer->events = [];
-        $request = $this->buildRequest($method, $uri, $serverData, $postData, $bodyData, $fileData);
+        $request = $this->buildRequest($method, $uri, $serverData, $bodyData, $fileData);
 
         $this->requestFactory->set($request);
         $this->requestHandler->handle();

@@ -159,16 +159,16 @@
         },
         {
             "name": "morphp/medas-http-request-handler",
-            "version": "v3.0.12",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tarantuli/medas-http-request-handler.git",
-                "reference": "906b9fe8fee798ff292b3bda74ffd02f8bff160b"
+                "reference": "0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/906b9fe8fee798ff292b3bda74ffd02f8bff160b",
-                "reference": "906b9fe8fee798ff292b3bda74ffd02f8bff160b",
+                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f",
+                "reference": "0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f",
                 "shasum": ""
             },
             "require": {
@@ -208,10 +208,10 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.0.12",
+                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.1.0",
                 "issues": "https://github.com/tarantuli/medas-http-request-handler/issues"
             },
-            "time": "2026-05-13T11:51:29+00:00"
+            "time": "2026-05-13T12:08:42+00:00"
         },
         {
             "name": "morphp/medas-json",
