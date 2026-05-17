@@ -18,36 +18,54 @@ use Medas\HttpRequestHandler\{
 readonly class RequestFaker
 {
     public function __construct(
-        private DebugInformationGatherer $debugInformationGatherer,
-        private HttpRequestHandler       $requestHandler,
-        private OutputDataPrinter        $outputDataPrinter,
-        private RequestFactory           $requestFactory,
-        private Request\UriManager       $uriManager,
-        private ResponseDispatcher       $responseDispatcher,
+        private DebugInformationGatherer     $debugInformationGatherer,
+        private HttpRequestHandler           $requestHandler,
+        private OutputDataPrinter            $outputDataPrinter,
+        private RequestFactory               $requestFactory,
+        private Request\AuthenticationFinder $authenticationFinder,
+        private Request\UriManager           $uriManager,
+        private ResponseDispatcher           $responseDispatcher,
     )
     {
     }
 
     /**
-     * Constructs a Request without setting it on the factory or dispatching anything.
-     * Useful when you need to modify the request (e.g., set an authenticated user) before
-     * calling processRequest() or captureDispatch().
+     * Constructs a Request without dispatching anything.
+     *
+     * Headers should be passed as standard HTTP header names; they are converted to the
+     * PHP $_SERVER HTTP_* convention automatically:
+     *   ['Authorization' => 'Bearer token']  →  ServerData['HTTP_AUTHORIZATION']
+     *
+     * AuthenticationFinder is run automatically so that auth-related headers (e.g. Bearer
+     * tokens) are resolved into $request->authentication->user via the normal vote pipeline.
+     * You can still override $request->authentication->user afterward for tests that don't
+     * need full token parsing.
      */
     public function buildRequest(
         Request\Method $method,
         string         $uri,
+        array          $headers = [],
         array          $serverData = [],
         array          $bodyData = [],
         array          $fileData = [],
     ): Request\Request
     {
-        return new Request\Request(
+        foreach ($headers as $name => $value) {
+            $key = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+            $serverData[$key] = $value;
+        }
+
+        $request = new Request\Request(
             $method,
             $this->uriManager->fromString($uri),
             new Request\ServerData($serverData),
             new Request\BodyData($bodyData),
             new Request\FileData($fileData),
         );
+
+        $this->authenticationFinder->find($request);
+
+        return $request;
     }
 
     /**
@@ -58,13 +76,14 @@ readonly class RequestFaker
     public function compileAndDispatchRequest(
         Request\Method $method,
         string         $uri,
+        array          $headers = [],
         array          $serverData = [],
         array          $bodyData = [],
         array          $fileData = [],
     ): void
     {
         $this->debugInformationGatherer->events = [];
-        $request = $this->buildRequest($method, $uri, $serverData, $bodyData, $fileData);
+        $request = $this->buildRequest($method, $uri, $headers, $serverData, $bodyData, $fileData);
 
         $this->requestFactory->set($request);
         $this->requestHandler->handle();
@@ -81,6 +100,7 @@ readonly class RequestFaker
     public function processRequest(Request\Request $request): Response
     {
         $this->debugInformationGatherer->events = [];
+
         $this->requestFactory->set($request);
 
         return $this->requestHandler->processRequest($request);
