@@ -11,7 +11,20 @@ namespace Medas\HttpRequestFaker;
 readonly class CapturedResponse
 {
     /**
-     * @param array<string, string> $headers
+     * Parses the name and value from a Set-Cookie header string.
+     *
+     * @return array{string, string}
+     */
+    public static function parseNameValue(string $setCookieHeader): array
+    {
+        $firstSegment = trim(explode(';', $setCookieHeader)[0]);
+        [$encodedName, $encodedValue] = explode('=', $firstSegment, 2);
+
+        return [rawurldecode(trim($encodedName)), rawurldecode(trim($encodedValue))];
+    }
+
+    /**
+     * @param array<string, string[]> $headers
      */
     public function __construct(
         public int    $responseCode,
@@ -19,6 +32,33 @@ readonly class CapturedResponse
         public string $body,
     )
     {
+    }
+
+    /**
+     * Returns all Set-Cookie header values from the response.
+     *
+     * @return string[]
+     */
+    public function setCookies(): array
+    {
+        return $this->headers['Set-Cookie'] ?? [];
+    }
+
+    /**
+     * Returns the value of the named cookie from the response Set-Cookie headers, or null
+     * if no cookie with that name was set.
+     */
+    public function cookie(string $name): string|null
+    {
+        foreach ($this->setCookies() as $setCookieHeader) {
+            [$cookieName, $cookieValue] = self::parseNameValue($setCookieHeader);
+
+            if ($cookieName === $name) {
+                return $cookieValue;
+            }
+        }
+
+        return null;
     }
 
     /**

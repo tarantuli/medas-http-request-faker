@@ -4,20 +4,71 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6789d21b4638f6439296b6741363f6df",
+    "content-hash": "beda83f7cbe4e508cdfa39038533f752",
     "packages": [
         {
-            "name": "morphp/medas-core",
-            "version": "v3.5.1",
+            "name": "morphp/medas-cookies",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tarantuli/medas-core.git",
-                "reference": "4874315aee48c17f8e52e68977cfde00f04fd8b0"
+                "url": "https://github.com/tarantuli/medas-cookies.git",
+                "reference": "4ebc9b69819fdf0877239fb43d820cd35364726a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tarantuli/medas-core/zipball/4874315aee48c17f8e52e68977cfde00f04fd8b0",
-                "reference": "4874315aee48c17f8e52e68977cfde00f04fd8b0",
+                "url": "https://api.github.com/repos/tarantuli/medas-cookies/zipball/4ebc9b69819fdf0877239fb43d820cd35364726a",
+                "reference": "4ebc9b69819fdf0877239fb43d820cd35364726a",
+                "shasum": ""
+            },
+            "require": {
+                "morphp/medas-core": "^3",
+                "morphp/medas-http-request-handler": "^3",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "morphp/medas-object-instantiator": "^3",
+                "morphp/medas-service-manager": "^3",
+                "phpunit/phpunit": "^10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Medas\\Cookies\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Medas\\CookiesTest\\": "tests/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Patrick Morpey",
+                    "email": "patrick@morphp.nl"
+                }
+            ],
+            "description": "Medas cookies",
+            "keywords": [
+                "http"
+            ],
+            "support": {
+                "source": "https://github.com/tarantuli/medas-cookies/tree/v1.0.4",
+                "issues": "https://github.com/tarantuli/medas-cookies/issues"
+            },
+            "time": "2026-05-18T14:20:12+00:00"
+        },
+        {
+            "name": "morphp/medas-core",
+            "version": "v3.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tarantuli/medas-core.git",
+                "reference": "9f0da99da724a201bd5cfa883f1cd5c178e293f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tarantuli/medas-core/zipball/9f0da99da724a201bd5cfa883f1cd5c178e293f4",
+                "reference": "9f0da99da724a201bd5cfa883f1cd5c178e293f4",
                 "shasum": ""
             },
             "require": {
@@ -50,10 +101,10 @@
                 "medas"
             ],
             "support": {
-                "source": "https://github.com/tarantuli/medas-core/tree/v3.5.1",
+                "source": "https://github.com/tarantuli/medas-core/tree/v3.5.2",
                 "issues": "https://github.com/tarantuli/medas-core/issues"
             },
-            "time": "2026-05-13T09:40:02+00:00"
+            "time": "2026-05-18T11:19:48+00:00"
         },
         {
             "name": "morphp/medas-file-system",
@@ -159,16 +210,16 @@
         },
         {
             "name": "morphp/medas-http-request-handler",
-            "version": "v3.1.0",
+            "version": "v3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tarantuli/medas-http-request-handler.git",
-                "reference": "0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f"
+                "reference": "38b5aa21a5e41dd361c899f1a602d042493773c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f",
-                "reference": "0daf6b244b7fd9e8e7bf312fa8ec196b16d21c2f",
+                "url": "https://api.github.com/repos/tarantuli/medas-http-request-handler/zipball/38b5aa21a5e41dd361c899f1a602d042493773c7",
+                "reference": "38b5aa21a5e41dd361c899f1a602d042493773c7",
                 "shasum": ""
             },
             "require": {
@@ -208,10 +259,10 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.1.0",
+                "source": "https://github.com/tarantuli/medas-http-request-handler/tree/v3.1.5",
                 "issues": "https://github.com/tarantuli/medas-http-request-handler/issues"
             },
-            "time": "2026-05-13T12:08:42+00:00"
+            "time": "2026-05-18T14:58:29+00:00"
         },
         {
             "name": "morphp/medas-json",
