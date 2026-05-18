@@ -14,7 +14,6 @@
   "type": "library",
   "require": {
     "morphp/medas-core": "^3",
-    "morphp/medas-cookies": "^1",
     "morphp/medas-http-request-handler": "^3",
     "php": "^8.4"
   },

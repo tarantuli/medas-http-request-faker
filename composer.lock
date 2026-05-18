@@ -4,59 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "beda83f7cbe4e508cdfa39038533f752",
+    "content-hash": "6789d21b4638f6439296b6741363f6df",
     "packages": [
-        {
-            "name": "morphp/medas-cookies",
-            "version": "v1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tarantuli/medas-cookies.git",
-                "reference": "4ebc9b69819fdf0877239fb43d820cd35364726a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tarantuli/medas-cookies/zipball/4ebc9b69819fdf0877239fb43d820cd35364726a",
-                "reference": "4ebc9b69819fdf0877239fb43d820cd35364726a",
-                "shasum": ""
-            },
-            "require": {
-                "morphp/medas-core": "^3",
-                "morphp/medas-http-request-handler": "^3",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "morphp/medas-object-instantiator": "^3",
-                "morphp/medas-service-manager": "^3",
-                "phpunit/phpunit": "^10"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Medas\\Cookies\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Medas\\CookiesTest\\": "tests/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Patrick Morpey",
-                    "email": "patrick@morphp.nl"
-                }
-            ],
-            "description": "Medas cookies",
-            "keywords": [
-                "http"
-            ],
-            "support": {
-                "source": "https://github.com/tarantuli/medas-cookies/tree/v1.0.4",
-                "issues": "https://github.com/tarantuli/medas-cookies/issues"
-            },
-            "time": "2026-05-18T14:20:12+00:00"
-        },
         {
             "name": "morphp/medas-core",
             "version": "v3.5.2",
