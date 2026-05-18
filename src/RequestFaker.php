@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Medas\HttpRequestFaker;
 
-use Medas\Core\{Attributes\Service, Events\DebugInformationGatherer};
+use Medas\Core\{
+    Attributes\Service,
+    Events\DebugInformationGatherer,
+    Interfaces\CacheManager,
+    Interfaces\EntityManager
+};
 use Medas\HttpRequestHandler\{
     HttpRequestHandler,
     Request,
@@ -18,7 +23,9 @@ use Medas\HttpRequestHandler\{
 readonly class RequestFaker
 {
     public function __construct(
+        private CacheManager                 $cacheManager,
         private DebugInformationGatherer     $debugInformationGatherer,
+        private EntityManager                $entityManager,
         private HttpRequestHandler           $requestHandler,
         private OutputDataPrinter            $outputDataPrinter,
         private RequestFactory               $requestFactory,
@@ -82,10 +89,9 @@ readonly class RequestFaker
         array          $fileData = [],
     ): void
     {
-        $this->debugInformationGatherer->events = [];
         $request = $this->buildRequest($method, $uri, $headers, $serverData, $bodyData, $fileData);
 
-        $this->requestFactory->set($request);
+        $this->prepare($request);
         $this->requestHandler->handle();
     }
 
@@ -99,9 +105,7 @@ readonly class RequestFaker
      */
     public function processRequest(Request\Request $request): Response
     {
-        $this->debugInformationGatherer->events = [];
-
-        $this->requestFactory->set($request);
+        $this->prepare($request);
 
         return $this->requestHandler->processRequest($request);
     }
@@ -116,9 +120,7 @@ readonly class RequestFaker
      */
     public function captureDispatch(Request\Request $request): CapturedResponse
     {
-        $this->debugInformationGatherer->events = [];
-
-        $this->requestFactory->set($request);
+        $this->prepare($request);
 
         $response = $this->requestHandler->processRequest($request);
         $job = $this->responseDispatcher->prepareJob($request, $response);
@@ -131,5 +133,29 @@ readonly class RequestFaker
             headers: $job->headers,
             body: $job->output,
         );
+    }
+
+    /**
+     * Clears all request-scoped state and pre-populates the request factory cache.
+     *
+     * Order is important: caches must be cleared before set() writes the request
+     * into the memory cache.
+     *
+     * - CacheManager::clearAll() clears all Clearable caches (in-process memory caches,
+     *   service-level memoization). Persistent caches are unaffected as they don't
+     *   implement Clearable.
+     * - EntityManager::clear() clears the identity map so entities are re-fetched
+     *   from the database rather than returned stale from a previous request.
+     * - RequestFactory::set() pre-populates the memory cache so that services calling
+     *   requestFactory->get() internally receive the correct request.
+     */
+    private function prepare(Request\Request $request): void
+    {
+        $this->cacheManager->clearAll();
+        $this->entityManager->clear();
+
+        $this->debugInformationGatherer->events = [];
+
+        $this->requestFactory->set($request);
     }
 }
