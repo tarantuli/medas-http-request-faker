@@ -24,6 +24,15 @@ readonly class CapturedResponse
     }
 
     /**
+     * The body decoded according to the response Content-Type, or null when the body is
+     * empty, the Content-Type is not recognized, or parsing fails.
+     *
+     *   application/json, application/ld+json  →  decoded as associative array
+     *   application/x-www-form-urlencoded      →  decoded via parse_str
+     */
+    public mixed $parsedBody;
+
+    /**
      * @param array<string, string[]> $headers
      */
     public function __construct(
@@ -32,6 +41,33 @@ readonly class CapturedResponse
         public string $body,
     )
     {
+        $this->parsedBody = $this->parseBody();
+    }
+
+    private function parseBody(): mixed
+    {
+        if ($this->body === '') {
+            return null;
+        }
+
+        $contentType = $this->headers['Content-Type'][0] ?? '';
+
+        if (str_contains($contentType, 'application/json') || str_contains($contentType, 'application/ld+json')) {
+            try {
+                return json_decode($this->body, associative: true, flags: JSON_THROW_ON_ERROR);
+            }
+            catch (\JsonException) {
+                return null;
+            }
+        }
+
+        if (str_contains($contentType, 'application/x-www-form-urlencoded')) {
+            parse_str($this->body, $parsed);
+
+            return $parsed;
+        }
+
+        return null;
     }
 
     /**
