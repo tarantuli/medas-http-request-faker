@@ -73,6 +73,10 @@ class RequestFaker
         array          $cookieData = [],
     ): Request\Request
     {
+        if (!array_key_exists('Accept', $headers)) {
+            $headers['Accept'] = 'application/json';
+        }
+
         foreach ($headers as $name => $value) {
             $key = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
             $serverData[$key] = $value;
