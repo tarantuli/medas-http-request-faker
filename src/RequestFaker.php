@@ -6,6 +6,7 @@ namespace Medas\HttpRequestFaker;
 
 use Medas\Core\{
     Attributes\Service,
+    Events\BeforeResponse,
     Events\DebugInformationGatherer,
     Interfaces\CacheManager,
     Interfaces\EntityManager
@@ -58,7 +59,7 @@ class RequestFaker
      * PHP $_SERVER HTTP_* convention automatically:
      *   ['Authorization' => 'Bearer token']  →  ServerData['HTTP_AUTHORIZATION']
      *
-     * AuthenticationFinder is run automatically so that auth-related headers (e.g., Bearer
+     * AuthenticationFinder is run automatically so that auth-related headers (e.g. Bearer
      * tokens) are resolved into $request->authentication->user via the normal vote pipeline.
      * You can still override $request->authentication->user afterward for tests that don't
      * need full token parsing.
@@ -121,7 +122,7 @@ class RequestFaker
 
     /**
      * Processes a request and returns the raw Response object.
-     * Exceptions from routing, authorization, and handler logic bubble up normally,
+     * Exceptions from routing, authorisation, and handler logic bubble up normally,
      * making this the right entry point for asserting that specific exceptions are thrown.
      *
      * Note: this bypasses the PSR-15 middleware pipeline. Set $request->authentication->user
@@ -150,6 +151,13 @@ class RequestFaker
         $this->prepare($request);
 
         $response = $this->requestHandler->processRequest($request);
+
+        // Mirror HttpRequestHandler::handle(): the real lifecycle dispatches
+        // BeforeResponse after processing, and that is where EntityManager flushes.
+        // Without it, entities persisted by post-flush listeners (an EntityCreated
+        // reactor, say) stay uncommitted and are dropped on the next clear().
+        dispatch(new BeforeResponse());
+
         $job = $this->responseDispatcher->prepareJob($request, $response);
 
         // Apply ETag negotiation without sending headers or echoing

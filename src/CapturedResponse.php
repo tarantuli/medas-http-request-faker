@@ -25,7 +25,7 @@ readonly class CapturedResponse
 
     /**
      * The body decoded according to the response Content-Type, or null when the body is
-     * empty, the Content-Type is not recognized, or parsing fails.
+     * empty, the Content-Type is not recognised, or parsing fails.
      *
      *   application/json, application/ld+json  →  decoded as associative array
      *   application/x-www-form-urlencoded      →  decoded via parse_str
