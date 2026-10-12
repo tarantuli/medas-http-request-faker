@@ -9,7 +9,8 @@ use Medas\Core\{
     Events\BeforeResponse,
     Events\DebugInformationGatherer,
     Interfaces\CacheManager,
-    Interfaces\EntityManager
+    Interfaces\EntityManager,
+    Interfaces\HasId
 };
 use Medas\HttpRequestHandler\{
     HttpRequestHandler,
@@ -185,6 +186,10 @@ class RequestFaker
      *   implement Clearable.
      * - EntityManager::clear() clears the identity map, so entities are re-fetched
      *   from the database rather than returned stale from a previous request.
+     *   The authenticated user was resolved by buildRequest(), before the clear, so it
+     *   is fetched again: otherwise it's a different instance than the same user
+     *   reached through the request's entities (e.g. an item's owner), and identity
+     *   checks like `$user === $item->owner` fail.
      * - RequestFactory::set() pre-populates the memory cache so that services calling
      *   requestFactory->get() internally receive the correct request.
      */
@@ -192,6 +197,12 @@ class RequestFaker
     {
         $this->cacheManager->clearAll();
         $this->entityManager->clear();
+
+        $user = $request->authentication->user;
+
+        if ($user instanceof HasId) {
+            $request->authentication->user = $this->entityManager->get($user::class, $user->id());
+        }
 
         $this->debugInformationGatherer->events = [];
 
